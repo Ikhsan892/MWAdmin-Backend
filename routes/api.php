@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Middleware\ConfirmedMiddleware;
+use App\Http\Middleware\LoginMiddleware;
+use App\Http\Middleware\SignupMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/user/signup', 'UserController@signup')->middleware(SignupMiddleware::class);
+Route::post('/user/login', 'UserController@login')->middleware(LoginMiddleware::class);
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    // Private API for Admin , Users Section
     Route::get('/user', 'UserController@listuser');
+    Route::get('/user/check', 'UserController@checkConfirm');
+    Route::get('/user/detail', 'UserController@user_detail');
+    Route::get('/user/logout', 'UserController@logout');
+    Route::put('/user/confirmed', 'UserController@confirmed')->middleware(ConfirmedMiddleware::class);
+    Route::put('/user/update/{name}', 'UserController@update');
+
+    // Private API for Customers
+    Route::get("/customers", 'CustomerController@getAllCustomers');
 });
+// Public API for Client 
 Route::get('/blog', 'BlogController@index');
 Route::get('/layout', 'LayoutController@index');
 Route::get('/token', 'UserController@get_token');
