@@ -28,6 +28,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/user/confirmed', 'UserController@confirmed')->middleware(ConfirmedMiddleware::class);
     Route::put('/user/update/{name}', 'UserController@update');
 
+    // Private API for Metode Pembayaran
+    Route::get('/metode-pembayaran', 'MetodePembayaranController@index');
+
+    // Private API for Status Pembayaran
+    Route::get('/status-pembayaran', 'StatusPembayaranController@index');
+
     // Private API for Customers
     Route::get("/customers", 'CustomerController@getAllCustomers');
 });
