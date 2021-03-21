@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kurir extends Model
 {
-    public function resis(){
-        return $this->hasMany('App\Resi');
+    public function resis()
+    {
+        return $this->hasMany('App\Resi', 'pengiriman_id');
     }
 }

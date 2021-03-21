@@ -36,6 +36,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Private API for Customers
     Route::get("/customers", 'CustomerController@getAllCustomers');
+
+    // Private API for Kurir
+    Route::get('/kurir', 'KurirController@index');
 });
 // Public API for Client 
 Route::get('/blog', 'BlogController@index');

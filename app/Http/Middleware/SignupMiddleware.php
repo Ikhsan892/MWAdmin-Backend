@@ -17,7 +17,8 @@ class SignupMiddleware
     public function handle($request, Closure $next)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
             'email' => 'required',
             'role' => 'required',
             'password' => 'required',

@@ -16,7 +16,7 @@ class InvoiceController extends Controller
         $resi_from_search = Resi::where('no_resi', $request->get('no_resi'))->get('id');
         if ($resi_from_search->count() < 1) {
             return response()->json([
-                'data' => 'empty'
+                'message' => 'Data Not Found'
             ], 404);
         } else {
             $id_resi = $resi_from_search[0]->id;
@@ -52,5 +52,8 @@ class InvoiceController extends Controller
                 ),
             ], 200);
         }
+    }
+    public function insertResi(Request $request)
+    {
     }
 }

@@ -57,7 +57,7 @@ class UserController extends Controller
             ], 227);
         }
 
-        $token = $user->createToken($user->name)->plainTextToken;
+        $token = $user->createToken($user->firstName)->plainTextToken;
         $response = [
             'severity'  => 'success',
             'success'   => true,
@@ -69,7 +69,7 @@ class UserController extends Controller
     }
     public function signup(Request $req)
     {
-        $name = User::where('name', $req->name)
+        $name = User::where('firstName', $req->firstName)
             ->first();
         $email = User::where('email', $req->email)->first();
         if ($name) {
@@ -90,12 +90,13 @@ class UserController extends Controller
                 $user->ttl = $req->ttl;
                 $user->jabatan = $req->jabatan;
                 $user->profile_image = $req->profile_image;
-                $user->name = $req->name;
+                $user->firstName = $req->firstName;
+                $user->lastName = $req->lastName;
                 $user->email = $req->email;
                 $user->password = Hash::make($req->password);
                 try {
                     if ($user->save()) {
-                        $token = $user->createToken($req->name)->plainTextToken;
+                        $token = $user->createToken($req->firstName)->plainTextToken;
                         return response()->json(
                             [
                                 'message' => 'success',
