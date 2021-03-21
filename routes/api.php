@@ -39,6 +39,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Private API for Kurir
     Route::get('/kurir', 'KurirController@index');
+
+    // Private API for Invoice
+    Route::post('/invoice', 'InvoiceController@insertInvoice');
 });
 // Public API for Client 
 Route::get('/blog', 'BlogController@index');
@@ -53,3 +56,4 @@ Route::post('/image', 'ImageController@insertImageWithJsonRequest');
 Route::post('/image/update', 'ImageController@updateImage');
 Route::get('/invoice', 'InvoiceController@index');
 Route::get('/track', 'TrackController@index');
+// Route::get('/start', '');
