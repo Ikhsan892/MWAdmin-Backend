@@ -6,10 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sparepart extends Model
 {
-    public function barang(){
+    public function barang()
+    {
         return $this->belongsTo('App\Barang');
     }
-    public function resi(){
+    public function resi()
+    {
         return $this->belongsTo('App\Resi');
+    }
+
+    public function kerusakan()
+    {
+        return $this->belongsTo('App\Kerusakan');
     }
 }

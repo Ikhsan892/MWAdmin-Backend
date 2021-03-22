@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddKerusakanIdToBarangs extends Migration
+class AddKerusakanIdToSparepartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddKerusakanIdToBarangs extends Migration
      */
     public function up()
     {
-        Schema::table('kerusakan', function (Blueprint $table) {
-            $table->foreignId('barang_id')->nullable()->after('nama_kerusakan');
+        Schema::table('spareparts', function (Blueprint $table) {
+            $table->foreignId('kerusakan_id')->nullable()->after('harga');
         });
     }
 
@@ -25,8 +25,8 @@ class AddKerusakanIdToBarangs extends Migration
      */
     public function down()
     {
-        Schema::table('kerusakan', function (Blueprint $table) {
-            // $table->dropColumn('kerusakan_id');
+        Schema::table('spareparts', function (Blueprint $table) {
+            //
         });
     }
 }

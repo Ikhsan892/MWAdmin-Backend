@@ -18,7 +18,9 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-
+    public $invoice_id;
+    public $barang_id;
+    public $kerusakan_id;
     public function index(Request $request)
     {
         $resi_from_search = Resi::where('no_resi', $request->get('no_resi'))->get('id');
@@ -105,36 +107,39 @@ class InvoiceController extends Controller
             $resi->dp = $request->dp ? $request->dp : 0;
             $resi->save();
 
-            // Inserting barang
-
-
+            // Filling
+            $this->invoice_id = $request->no_invoice;
             $collect = collect($request->barang);
             $collect->map(function ($item, $key) {
                 $barang = new Barang();
+                $search = Resi::where('no_resi', $this->invoice_id)->get();
+                $barang->kategori_barang = "elektronik";
+                $barang->resi_id = $search[0]->id;
                 $barang->nama_barang = $item['nama_barang'];
+                $barang->save();
+                $this->barang_id = $item['nama_barang'];
                 $kerusakan_ = collect($item['kerusakan']);
                 $kerusakan_->map(function ($i, $k) {
                     $kerusakan = new Kerusakan();
                     $kerusakan->nama_kerusakan = $i['nama_kerusakan'];
+                    $this->kerusakan_id = $i['nama_kerusakan'];
+                    $search = Barang::where('nama_barang', $this->barang_id)->get();
+                    $kerusakan->barang_id = $search[0]->id;
+                    $kerusakan->save();
                     $sparepart_ = collect($i['sparepart']);
                     $sparepart_->map(function ($j, $u) {
-                        $kerusakan2 = new Kerusakan();
                         $sparepart = new Sparepart();
                         $sparepart->nama_sparepart = $j['nama_sparepart'];
                         $sparepart->harga = $j['harga'];
+                        $search = Kerusakan::where('nama_kerusakan', $this->kerusakan_id)->get();
+                        $sparepart->kerusakan_id = $search[0]->id;
                         $sparepart->save();
-                        $status_sparepart = Sparepart::where(['nama_sparepart' => $j['nama_sparepart']])->firstOrFail();
-                        $kerusakan2->spareparts()->associate($sparepart);
                     });
-                    $kerusakan->save();
                 });
-                $barang->kerusakans()->save($kerusakan);
-                $barang->save();
             });
 
-
             $message = array('message' => 'Resi has been created');
-            return response()->json($request, 201);
+            return response()->json($message, 201);
         } else {
             $message = array('message' => 'Data Duplicate');
             return response()->json($message, 203);
